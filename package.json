@@ -1,0 +1,20 @@
+{
+  "name": "supermarket-prices",
+  "private": true,
+  "repository": "git@github.com:diversi-tech/smartcart.git",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "start:backend": "yarn workspace backend start",
+    "start:frontend": "yarn workspace frontend start",
+    "dev:backend": "yarn workspace backend dev",
+    "dev:frontend": "yarn workspace frontend start",
+    "dev": "concurrently \"yarn dev:backend\" \"yarn dev:frontend\"",
+    "build": "yarn workspaces run build",
+    "seed": "yarn workspace backend seed"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
