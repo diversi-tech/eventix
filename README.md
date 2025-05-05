@@ -1,4 +1,4 @@
-# SmartCart Project
+# Supermarket Prices Project
 
 A web application for tracking supermarket items and prices, with an Express.js backend API and React frontend.
 
@@ -72,13 +72,16 @@ yarn build  # Creates static files in build/ directory
 
 ## Deployment
 
-### Backend
-Deploy to Render.com:
-- Build: `cd packages/backend && yarn install && yarn build`
-- Start: `cd packages/backend && yarn start`
+### Backend - Deploying to Render.com
+This project uses Render for backend hosting. The deployment process is fully automated:
+- All merges to the `main` branch automatically trigger a new deployment
+- No manual deployment steps required after initial project setup
+- Pull requests automatically create preview deployments
 
-### Frontend
-Deploy to Vercel/Netlify:
-- Build: `cd packages/frontend && yarn install && yarn build`
-- Output: `packages/frontend/build`
-- Set `REACT_APP_API_URL` to production backend URL
+### Frontend - Deploying to Vercel.com
+This project uses Vercel for frontend hosting. The deployment process is fully automated:
+- All merges to the `main` branch automatically trigger a new deployment
+- No manual deployment steps required after initial project setup
+- Pull requests automatically create preview deployments
+
+Make sure to set the `REACT_APP_API_URL` environment variable in Vercel to point to your Render backend URL.
