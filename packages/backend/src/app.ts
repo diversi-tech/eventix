@@ -1,5 +1,9 @@
 import express from 'express';
 import cors from 'cors';
+import itemsRouter from './routes/items';
+import healthRouter from './routes/health';
+import supermarketsRouter from './routes/supermarkets';
+import promotionsRouter from './routes/promotions';
 
 const app = express();
 
@@ -7,22 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Simple route for testing
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'ok', message: 'Server is running' });
-});
-
-// Basic route to get a mock item
-app.get('/api/items/1', (req, res) => {
-  const mockItem = {
-    itemId: 1,
-    itemCode: '7290000000756',
-    itemName: 'קולורבי',
-    price: 3.90,
-    category: 'PRODUCE'
-  };
-  
-  res.json(mockItem);
-});
+// Routes
+app.use('/api/health', healthRouter);
+app.use('/api/items', itemsRouter);
+app.use('/api/supermarkets', supermarketsRouter);
+app.use('/api/promotions', promotionsRouter);
 
 export default app;
