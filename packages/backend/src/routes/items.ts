@@ -8,7 +8,14 @@ router.get('/', (req, res) => {
 
 // Get item by ID
 router.get('/:id', (req, res) => {
-  res.json({ message: `Get item ${req.params.id}` });
+  const mockItem = {
+    itemId: parseInt(req.params.id, 10),
+    itemCode: '34291242',
+    itemName: 'Icecream',
+    price: 99.99,
+    category: 'Frozen food'
+  };
+  res.json(mockItem);
 });
 
 // Search items

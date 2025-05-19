@@ -41,6 +41,8 @@ yarn install
 
 # Create environment file
 echo "REACT_APP_API_URL=http://localhost:3001/api" > .env.development
+echo "SUPABASE_URL=https://bpjdnjpmiaikmswdxqwx.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwamRuanBtaWFpa21zd2R4cXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzODQzMjcsImV4cCI6MjA2MTk2MDMyN30.fDU_xsEWQN3r0HosHSeaXiAcckV-1hnhBdXHIooS0B0" >> .env
 
 # Start dev server
 yarn start
@@ -48,28 +50,11 @@ yarn start
 The frontend runs at http://localhost:3000
 
 
-### ETL
-```bash
-# Navigate to ETL directory
-cd packages/ETL
-
-# Install dependencies
-yarn install
-
-# Create .env file
-echo "SUPABASE_URL=https://bpjdnjpmiaikmswdxqwx.supabase.co
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwamRuanBtaWFpa21zd2R4cXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzODQzMjcsImV4cCI6MjA2MTk2MDMyN30.fDU_xsEWQN3r0HosHSeaXiAcckV-1hnhBdXHIooS0B0" > .env
-
-# Start dev server
-yarn dev
-```
-
-
 ## Development
 
 - Run both backend and frontend servers in separate terminals
 - Both servers auto-reload on code changes
-- In the packages/ETL/scripts are two useful code snippets:
+- In the packages/backend/scripts are two useful code snippets:
     1) how to connect to supermarkets and download their data
     2) how to interact with our supabase db (Read/write)
 
@@ -88,4 +73,3 @@ This project uses Vercel for frontend hosting. The deployment process is fully a
 
 Make sure to set the `REACT_APP_API_URL` environment variable in Vercel to point to your Render backend URL.
 
-### ETL - Deploying to github actions
