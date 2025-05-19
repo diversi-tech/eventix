@@ -4,7 +4,7 @@ A web application for tracking supermarket items and prices, with an Express.js 
 
 ## Prerequisites
 
-- Node.js (v14+)
+- Node.js (v22+)
 - Yarn
 - Git
 
@@ -23,6 +23,8 @@ yarn install
 echo "PORT=3001
 NODE_ENV=development
 CORS_ORIGIN=http://localhost:3000" > .env
+echo "SUPABASE_URL=https://bpjdnjpmiaikmswdxqwx.supabase.co
+SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwamRuanBtaWFpa21zd2R4cXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzODQzMjcsImV4cCI6MjA2MTk2MDMyN30.fDU_xsEWQN3r0HosHSeaXiAcckV-1hnhBdXHIooS0B0" >> .env
 
 # Start dev server
 yarn dev
@@ -41,8 +43,6 @@ yarn install
 
 # Create environment file
 echo "REACT_APP_API_URL=http://localhost:3001/api" > .env.development
-echo "SUPABASE_URL=https://bpjdnjpmiaikmswdxqwx.supabase.co
-SUPABASE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwamRuanBtaWFpa21zd2R4cXd4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYzODQzMjcsImV4cCI6MjA2MTk2MDMyN30.fDU_xsEWQN3r0HosHSeaXiAcckV-1hnhBdXHIooS0B0" >> .env
 
 # Start dev server
 yarn start
@@ -73,3 +73,8 @@ This project uses Vercel for frontend hosting. The deployment process is fully a
 
 Make sure to set the `REACT_APP_API_URL` environment variable in Vercel to point to your Render backend URL.
 
+## Deployment troubleshooting
+
+The env variables need to be changed in render/vercel.
+In render we must make sure not to set NODE_ENV to production because then we don't get the types installed (use `dev` instead)
+In vercel we must set the REACT_APP_API_URL manually. For some reason it doesn't take from the .env.production
