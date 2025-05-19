@@ -1,6 +1,6 @@
 # Supermarket Prices Project
 
-A web application for tracking supermarket items and prices, with an Express.js backend API and React frontend.
+A web application for creating and sharing events/meals, with an Express.js backend API and React frontend.
 
 ## Prerequisites
 
@@ -53,11 +53,6 @@ The frontend runs at http://localhost:3000
 ## Development
 
 - Run both backend and frontend servers in separate terminals
-- Both servers auto-reload on code changes
-- In the packages/backend/scripts are two useful code snippets:
-    1) how to connect to supermarkets and download their data
-    2) how to interact with our supabase db (Read/write)
-
 
 ### Backend - Deploying to Render.com
 This project uses Render for backend hosting. The deployment process is fully automated:
