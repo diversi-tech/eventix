@@ -1,4 +1,4 @@
-# Supermarket Prices Project
+# Meals and Events Together Project
 
 A web application for creating and sharing events/meals, with an Express.js backend API and React frontend.
 
