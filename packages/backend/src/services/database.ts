@@ -5,6 +5,28 @@ export class DatabaseService {
   private readonly tableName = 'events';
   private supabase: SupabaseClient | null = null;
 
+  // Mapping between camelCase and snake_case
+  private readonly columnMapping = {
+    // camelCase to snake_case
+    toSnake: {
+      mealType: 'meal_type',
+      expectedCount: 'expected_count',
+      actualCount: 'actual_count',
+      createdBy: 'created_by',
+      createdAt: 'created_at',
+      updatedAt: 'updated_at'
+    } as const,
+    // snake_case to camelCase
+    toCamel: {
+      meal_type: 'mealType',
+      expected_count: 'expectedCount',
+      actual_count: 'actualCount',
+      created_by: 'createdBy',
+      created_at: 'createdAt',
+      updated_at: 'updatedAt'
+    } as const
+  };
+
   private getClient(): SupabaseClient {
     if (!this.supabase) {
       const supabaseUrl = process.env.SUPABASE_URL;
@@ -35,7 +57,14 @@ export class DatabaseService {
         throw new Error('Failed to fetch events from database');
       }
 
-      return data || [];
+      return (data || []).map(event => 
+        Object.fromEntries(
+          Object.entries(event).map(([k, v]) => [
+            (this.columnMapping.toCamel as Record<string, string>)[k] || k,
+            v
+          ])
+        ) as unknown as Event
+      );
     } catch (error) {
       console.error('Error in getAllEvents:', error);
       throw error;
@@ -58,7 +87,12 @@ export class DatabaseService {
         throw new Error('Failed to fetch event from database');
       }
 
-      return data;
+      return Object.fromEntries(
+        Object.entries(data).map(([k, v]) => [
+          (this.columnMapping.toCamel as Record<string, string>)[k] || k,
+          v
+        ])
+      ) as unknown as Event;
     } catch (error) {
       console.error('Error in getEventById:', error);
       throw error;
@@ -67,9 +101,16 @@ export class DatabaseService {
 
   async createEvent(event: Omit<Event, 'id'>): Promise<Event> {
     try {
+      const snakeCaseEvent = Object.fromEntries(
+        Object.entries(event).map(([k, v]) => [
+          (this.columnMapping.toSnake as Record<string, string>)[k] || k,
+          v
+        ])
+      );
+      
       const { data, error } = await this.getClient()
         .from(this.tableName)
-        .insert([event])
+        .insert([snakeCaseEvent])
         .select()
         .single();
 
@@ -78,7 +119,12 @@ export class DatabaseService {
         throw new Error('Failed to create event in database');
       }
 
-      return data;
+      return Object.fromEntries(
+        Object.entries(data).map(([k, v]) => [
+          (this.columnMapping.toCamel as Record<string, string>)[k] || k,
+          v
+        ])
+      ) as unknown as Event;
     } catch (error) {
       console.error('Error in createEvent:', error);
       throw error;
