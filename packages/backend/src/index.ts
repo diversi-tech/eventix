@@ -5,9 +5,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import healthRoutes from './routes/health';
-import itemsRoutes from './routes/items';
+import eventsRoutes from './routes/events';
 import { databaseService } from './services/database';
-
 
 const app = express();
 const PORT = process.env.PORT;
@@ -22,8 +21,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/health', healthRoutes);
-app.use('/api/items', itemsRoutes);
-
+app.use('/api/events', eventsRoutes);
 
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);

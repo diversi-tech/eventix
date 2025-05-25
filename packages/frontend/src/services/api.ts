@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Item, ItemsResponse, ItemResponse } from '@base-project/shared';
+import { Event, EventsResponse, EventResponse } from '@eventix/shared';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -27,21 +27,21 @@ export const apiService = {
     return response.data;
   },
 
-  // Get all items
-  getItems: async (): Promise<Item[]> => {
-    const response = await apiClient.get<ItemsResponse>('/items');
+  // Get all events
+  getEvents: async (): Promise<Event[]> => {
+    const response = await apiClient.get<EventsResponse>('/events');
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.error || 'Failed to fetch items');
+    throw new Error(response.data.error || 'Failed to fetch events');
   },
 
-  // Get specific item
-  getItem: async (id: string): Promise<Item> => {
-    const response = await apiClient.get<ItemResponse>(`/items/${id}`);
+  // Get specific event
+  getEvent: async (id: string): Promise<Event> => {
+    const response = await apiClient.get<EventResponse>(`/events/${id}`);
     if (response.data.success && response.data.data) {
       return response.data.data;
     }
-    throw new Error(response.data.error || 'Failed to fetch item');
+    throw new Error(response.data.error || 'Failed to fetch event');
   },
 };

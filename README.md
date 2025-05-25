@@ -1,4 +1,4 @@
-# 🚀 Project template - Production Deployment Guide
+# 🚀 Eventix - Production Deployment Guide
 
 A full-stack TypeScript monorepo with Express backend, React frontend, and Supabase database.
 
@@ -12,7 +12,7 @@ A full-stack TypeScript monorepo with Express backend, React frontend, and Supab
 ```bash
 # Clone the repository
 git clone <your-repo-url>
-cd base-project
+cd eventix
 
 # Install all dependencies
 npm run install:all
@@ -80,7 +80,7 @@ Before starting, ensure you have accounts on:
 
 1. **Sign up/Login** to [Supabase](https://supabase.com)
 2. **Create New Project**
-   - Project name: `project-template-db` (or your choice)
+   - Project name: `eventix-db` (or your choice)
    - Database password: Generate and **save securely**
    - Region: Choose closest to your users
    - Click "Create new project"
@@ -94,29 +94,34 @@ Before starting, ensure you have accounts on:
 3. Copy and paste this SQL:
 
 ```sql
--- Create the items table
-CREATE TABLE IF NOT EXISTS items (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name VARCHAR(255) NOT NULL,
-    type VARCHAR(100) NOT NULL,
-    amount DECIMAL(10, 2) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+-- Create the events table
+CREATE TABLE IF NOT EXISTS events (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  title TEXT NOT NULL,
+  description TEXT,
+  location TEXT NOT NULL,
+  datetime TIMESTAMP WITH TIME ZONE NOT NULL,
+  language TEXT NOT NULL CHECK (language IN ('en', 'he')),
+  meal_type TEXT NOT NULL CHECK (meal_type IN ('meat', 'dairy', 'vegetarian', 'vegan', 'kosher', 'bbq', 'other')),
+  expected_count INTEGER NOT NULL,
+  actual_count INTEGER NOT NULL DEFAULT 0,
+  created_by UUID NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_items_type ON items(type);
-CREATE INDEX IF NOT EXISTS idx_items_created_at ON items(created_at);
+-- Create indexes
+CREATE INDEX IF NOT EXISTS idx_events_datetime ON events(datetime);
+CREATE INDEX IF NOT EXISTS idx_events_created_at ON events(created_at);
 
--- Enable Row Level Security
-ALTER TABLE items ENABLE ROW LEVEL SECURITY;
+-- Enable RLS
+ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 
--- Create policy to allow all operations (adjust as needed)
-CREATE POLICY "Allow all operations on items" ON items
-    FOR ALL 
-    TO public
-    USING (true)
-    WITH CHECK (true);
+-- Create policies
+CREATE POLICY "Allow all operations on events" ON events
+  FOR ALL
+  USING (true)
+  WITH CHECK (true);
 ```
 
 4. Click **"RUN"** to execute
@@ -151,10 +156,10 @@ git push origin main
 3. **Create New Web Service**
    - Click "New +" → "Web Service"
    - Connect your repository
-   - Select your `project-template` repository
+   - Select your `eventix` repository
 
 4. **Configure the service:**
-   - **Name**: `project-template-backend`
+   - **Name**: `eventix-backend`
    - **Region**: Oregon (or closest to your users)
    - **Branch**: `main`
    - **Root Directory**: `packages/backend`
@@ -196,10 +201,10 @@ In the Render dashboard, go to **Environment** tab and add:
 2. **Import Project**
    - Click "Add New..." → "Project"
    - Import from GitHub
-   - Select your `project-template` repository
+   - Select your `eventix` repository
 
 3. **Configure the project:**
-   - **Project Name**: `project-template-frontend`
+   - **Project Name**: `eventix-frontend`
    - **Framework Preset**: Create React App
    - **Base Directory**: `packages/frontend`
    - **Build Command**: 
@@ -267,15 +272,15 @@ Visit: `https://your-backend.onrender.com/api/health`
 Visit: `https://your-app.netlify.app`
 
 **Should show:**
-- ✅ Items list loads successfully
-- ✅ Backend status shows "healthy"
-- ✅ Clicking items shows details
-- ✅ No CORS errors in browser console
+- ✅ Events list loads successfully
+- ✅ Backend health check works
+- ✅ Clicking events shows details
+- ✅ Error handling works
 
 ### 4. Database Verification
 1. Go to **Supabase Dashboard** → **Table Editor**
-2. Check **items** table has data
-3. Verify new items appear when backend initializes
+2. Check **events** table has data
+3. Verify new events appear when backend initializes
 
 ---
 

@@ -1,29 +1,29 @@
 import React, { useState, useEffect } from 'react';
-import { Item } from '@base-project/shared';
+import { Event } from '@eventix/shared';
 import { apiService } from './services/api';
-import ItemCard from './components/ItemCard';
+import EventCard from './components/EventCard';
 import './App.css';
 
 function App() {
-  const [items, setItems] = useState<Item[]>([]);
-  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [events, setEvents] = useState<Event[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [healthStatus, setHealthStatus] = useState<string>('checking...');
 
   useEffect(() => {
-    loadItems();
+    loadEvents();
     checkHealth();
   }, []);
 
-  const loadItems = async () => {
+  const loadEvents = async () => {
     try {
       setLoading(true);
       setError(null);
-      const fetchedItems = await apiService.getItems();
-      setItems(fetchedItems);
+      const fetchedEvents = await apiService.getEvents();
+      setEvents(fetchedEvents);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load items');
+      setError(err instanceof Error ? err.message : 'Failed to load events');
     } finally {
       setLoading(false);
     }
@@ -38,23 +38,23 @@ function App() {
     }
   };
 
-  const handleItemClick = async (item: Item) => {
+  const handleEventClick = async (event: Event) => {
     try {
-      const fullItem = await apiService.getItem(item.id);
-      setSelectedItem(fullItem);
+      const fullEvent = await apiService.getEvent(event.id);
+      setSelectedEvent(fullEvent);
     } catch (err) {
-      console.error('Failed to fetch item details:', err);
+      console.error('Failed to fetch event details:', err);
     }
   };
 
   const clearSelection = () => {
-    setSelectedItem(null);
+    setSelectedEvent(null);
   };
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Base Project</h1>
+        <h1>Eventix</h1>
         <div style={{ fontSize: '14px', opacity: 0.8 }}>
           Backend Status: <span style={{ 
             color: healthStatus === 'healthy' ? 'lightgreen' : 'salmon',
@@ -64,7 +64,7 @@ function App() {
       </header>
 
       <main style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
-        {selectedItem ? (
+        {selectedEvent ? (
           <div>
             <button 
               onClick={clearSelection}
@@ -78,10 +78,10 @@ function App() {
                 cursor: 'pointer'
               }}
             >
-              ← Back to Items
+              ← Back to Events
             </button>
-            <h2>Item Details</h2>
-            <ItemCard item={selectedItem} />
+            <h2>Event Details</h2>
+            <EventCard event={selectedEvent} />
           </div>
         ) : (
           <div>
@@ -91,9 +91,9 @@ function App() {
               alignItems: 'center',
               marginBottom: '20px'
             }}>
-              <h2>Items ({items.length})</h2>
+              <h2>Events ({events.length})</h2>
               <button 
-                onClick={loadItems}
+                onClick={loadEvents}
                 disabled={loading}
                 style={{
                   padding: '8px 16px',
@@ -123,25 +123,25 @@ function App() {
 
             {loading ? (
               <div style={{ textAlign: 'center', padding: '40px' }}>
-                Loading items...
+                Loading events...
               </div>
-            ) : items.length > 0 ? (
+            ) : events.length > 0 ? (
               <div style={{
                 display: 'grid',
                 gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                 gap: '16px'
               }}>
-                {items.map((item) => (
-                  <ItemCard 
-                    key={item.id} 
-                    item={item} 
-                    onClick={handleItemClick}
+                {events.map((event) => (
+                  <EventCard 
+                    key={event.id} 
+                    event={event} 
+                    onClick={handleEventClick}
                   />
                 ))}
               </div>
             ) : (
               <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
-                No items found
+                No events found
               </div>
             )}
           </div>

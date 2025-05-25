@@ -1,5 +1,5 @@
 {
-  "name": "base-project",
+  "name": "eventix",
   "version": "1.0.0",
   "description": "Base project with backend, frontend, and shared packages",
   "private": true,

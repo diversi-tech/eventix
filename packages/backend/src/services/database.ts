@@ -1,8 +1,8 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
-import { Item } from '@base-project/shared';
+import { Event } from '@eventix/shared';
 
 export class DatabaseService {
-  private readonly tableName = 'items';
+  private readonly tableName = 'events';
   private supabase: SupabaseClient | null = null;
 
   private getClient(): SupabaseClient {
@@ -23,26 +23,26 @@ export class DatabaseService {
     return this.getClient() !== null;
   }
 
-  async getAllItems(): Promise<Item[]> {
+  async getAllEvents(): Promise<Event[]> {
     try {
       const { data, error } = await this.getClient()
         .from(this.tableName)
         .select('*')
-        .order('created_at', { ascending: true });
+        .order('datetime', { ascending: true });
 
       if (error) {
-        console.error('Database error fetching items:', error);
-        throw new Error('Failed to fetch items from database');
+        console.error('Database error fetching events:', error);
+        throw new Error('Failed to fetch events from database');
       }
 
       return data || [];
     } catch (error) {
-      console.error('Error in getAllItems:', error);
+      console.error('Error in getAllEvents:', error);
       throw error;
     }
   }
 
-  async getItemById(id: string): Promise<Item | null> {
+  async getEventById(id: string): Promise<Event | null> {
     try {
       const { data, error } = await this.getClient()
         .from(this.tableName)
@@ -52,35 +52,35 @@ export class DatabaseService {
 
       if (error) {
         if (error.code === 'PGRST116') {
-          return null; // Item not found
+          return null; // Event not found
         }
-        console.error('Database error fetching item:', error);
-        throw new Error('Failed to fetch item from database');
+        console.error('Database error fetching event:', error);
+        throw new Error('Failed to fetch event from database');
       }
 
       return data;
     } catch (error) {
-      console.error('Error in getItemById:', error);
+      console.error('Error in getEventById:', error);
       throw error;
     }
   }
 
-  async createItem(item: Omit<Item, 'id'>): Promise<Item> {
+  async createEvent(event: Omit<Event, 'id'>): Promise<Event> {
     try {
       const { data, error } = await this.getClient()
         .from(this.tableName)
-        .insert([item])
+        .insert([event])
         .select()
         .single();
 
       if (error) {
-        console.error('Database error creating item:', error);
-        throw new Error('Failed to create item in database');
+        console.error('Database error creating event:', error);
+        throw new Error('Failed to create event in database');
       }
 
       return data;
     } catch (error) {
-      console.error('Error in createItem:', error);
+      console.error('Error in createEvent:', error);
       throw error;
     }
   }
@@ -88,20 +88,42 @@ export class DatabaseService {
   // Initialize database with sample data if empty
   async initializeSampleData(): Promise<void> {
     try {
-      const items = await this.getAllItems();
+      const events = await this.getAllEvents();
       
-      if (items.length === 0) {
+      if (events.length === 0) {
         console.log('Initializing database with sample data...');
         
-        const sampleItems = [
-          { name: 'Laptop', type: 'Electronics', amount: 1200 },
-          { name: 'Coffee Beans', type: 'Food', amount: 25 },
-          { name: 'Office Chair', type: 'Furniture', amount: 350 },
-          { name: 'Notebook', type: 'Stationery', amount: 15 }
+        const sampleEvents = [
+          {
+            title: 'Team Dinner',
+            description: 'Monthly team dinner at Italian restaurant',
+            location: '123 Main St, City',
+            datetime: new Date('2024-04-15T19:00:00'),
+            language: 'en' as const,
+            mealType: 'meat' as const,
+            expectedCount: 10,
+            actualCount: 0,
+            createdBy: 'user1',
+            createdAt: new Date(),
+            updatedAt: new Date()
+          },
+          {
+            title: 'Vegan Potluck',
+            description: 'Bring your favorite vegan dish to share',
+            location: '456 Park Ave, City',
+            datetime: new Date('2024-04-20T18:00:00'),
+            language: 'en' as const,
+            mealType: 'vegan' as const,
+            expectedCount: 15,
+            actualCount: 0,
+            createdBy: 'user2',
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
         ];
 
-        for (const item of sampleItems) {
-          await this.createItem(item);
+        for (const event of sampleEvents) {
+          await this.createEvent(event);
         }
         
         console.log('Sample data initialized successfully');
