@@ -149,7 +149,7 @@ export class DatabaseService {
             mealType: 'meat' as const,
             expectedCount: 10,
             actualCount: 0,
-            createdBy: 'user1',
+            createdBy: '00000000-0000-0000-0000-000000000001',
             createdAt: new Date(),
             updatedAt: new Date()
           },
@@ -162,7 +162,7 @@ export class DatabaseService {
             mealType: 'vegan' as const,
             expectedCount: 15,
             actualCount: 0,
-            createdBy: 'user2',
+            createdBy: '00000000-0000-0000-0000-000000000002',
             createdAt: new Date(),
             updatedAt: new Date()
           }
