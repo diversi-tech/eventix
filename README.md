@@ -51,7 +51,7 @@ npm run dev
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   Frontend      │    │   Backend       │    │   Database      │
-│   (Netlify)      │───▶│   (Render)      │───▶│   (Supabase)    │
+│   (Netlify)     │───▶│   (Render)      │───▶│   (Supabase)    │
 │   React + TS    │    │   Express + TS  │    │   PostgreSQL    │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
