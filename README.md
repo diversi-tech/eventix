@@ -161,7 +161,7 @@ git push origin main
 4. **Configure the service:**
    - **Name**: `eventix-backend`
    - **Region**: Oregon (or closest to your users)
-   - **Branch**: `main`
+   - **Branch**: `main` (or `production`)
    - **Root Directory**: `packages/backend`
    - **Runtime**: Node
    - **Build Command**: 
@@ -205,6 +205,7 @@ In the Render dashboard, go to **Environment** tab and add:
 
 3. **Configure the project:**
    - **Project Name**: `eventix-frontend`
+   - **Branch to Deploy**: `main` (or `production`)
    - **Framework Preset**: Create React App
    - **Base Directory**: `packages/frontend`
    - **Build Command**: 
