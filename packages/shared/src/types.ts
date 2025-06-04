@@ -134,6 +134,10 @@ export interface BaseResponse {
   error?: string;
 }
 
+export interface EventResponse extends BaseResponse {
+  data: Event;
+}
+
 export interface EventsResponse extends BaseResponse {
   data: Event[];
 }
